@@ -1,0 +1,65 @@
+/* 
+ * File:   hal_adc_cfg.h
+ * Author: MOAAZ
+ *
+ * Created on February 25, 2024, 6:39 PM
+ */
+
+#ifndef HAL_ADC_CFG_H
+#define	HAL_ADC_CFG_H
+#include "../proc/pic18f4620.h"
+#include "../../MCAL_Layer/Interrupt/mcal_interrupt_gen_cfg.h"
+
+#define ADC_IS_ENABLE() (ADCON0bits.ADON = 1)
+#define ADC_IS_DISABLE() (ADCON0bits.ADON = 0)
+#define ADC_CONVERSION_STATUS()  (ADCON0bits.GO_nDONE)
+
+#define ADC_ENABLE_VOLTAGE_REFERENCE()  do{ADCON1bits.VCFG1 = 1;\
+                                           ADCON1bits.VCFG0 = 1;\
+                                        }while(0)
+#define ADC_DISABLE_VOLTAGE_REFERENCE() do{ADCON1bits.VCFG1 = 0;\
+                                           ADCON1bits.VCFG0 = 0;\
+                                        }while(0)
+#define ADC_RESULT_RIGHT_FORMAT()  (ADCON2bits.ADFM = 1)
+#define ADC_RESULT_LEFT_FORMAT()   (ADCON2bits.ADFM = 0)
+
+#define ADC_ANALOG_DIGITAL_PORT_CONFIG(_CONFIG) (ADCON1bits.PCFG = _CONFIG)
+#define ADC_START_CONVERSION()  (ADCON0bits.GODONE = 1)
+
+#define ADC_RIGHT_FORMAT      ( 0x01)
+#define ADC_LEFT_FORMAT      ( 0x00)
+
+#define ADC_VOLTAGE_REFERENCE_ENABLED       0x01U
+#define ADC_VOLTAGE_REFERENCE_DISABLED      0x00U
+
+#define ADC_CONVERSION_COMPLETED  0x01U
+#define ADC_CONVERSION_INPROGRESS 0x00U
+
+#if ADC_INTERRUPT_FEATURE_ENABLE_CFG == INTERRUPT_FEATURE_ENABLE
+#define  ADC_INTERRUPT_ENABLE()  (PIE1bits.ADIE = 1)
+#define  ADC_INTERRUPT_DISABLE() (PIE1bits.ADIE = 0)
+#define  ADC_INTERRUPT_CLEAR_FLAG() (PIR1bits.ADIF = 0)
+#if INTERRUPT_PRIORITY_LEVELS_ENABLE == INTERRUPT_FEATURE_ENABLE
+#define  ADC_INTERRUPT_HIGH_PRIORITY() (IPR1bits.ADIP = 1)
+#define  ADC_INTERRUPT_LOW_PRIORITY()  (IPR1bits.ADIP = 0)
+#endif
+#endif
+
+#define ADC_AN0_ANALOG_FUNCTIONALITY    0x0E
+#define ADC_AN1_ANALOG_FUNCTIONALITY    0x0D
+#define ADC_AN2_ANALOG_FUNCTIONALITY    0x0C
+#define ADC_AN3_ANALOG_FUNCTIONALITY    0x0B
+#define ADC_AN4_ANALOG_FUNCTIONALITY    0x0A
+#define ADC_AN5_ANALOG_FUNCTIONALITY    0x09
+#define ADC_AN6_ANALOG_FUNCTIONALITY    0x08
+#define ADC_AN7_ANALOG_FUNCTIONALITY    0x07
+#define ADC_AN8_ANALOG_FUNCTIONALITY    0x06
+#define ADC_AN9_ANALOG_FUNCTIONALITY    0x05
+#define ADC_AN10_ANALOG_FUNCTIONALITY   0x04
+#define ADC_AN11_ANALOG_FUNCTIONALITY   0x03
+#define ADC_AN12_ANALOG_FUNCTIONALITY   0x02
+#define ADC_ALL_ANALOG_FUNCTIONALITY    0x00
+#define ADC_ALL_DIGITAL_FUNCTIONALITY   0x0F
+
+#endif	/* HAL_ADC_CFG_H */
+
