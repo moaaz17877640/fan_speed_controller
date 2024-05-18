@@ -94,29 +94,29 @@ int main() {
        ret|= ADC_GetConversion_Blocking(&temp_sens ,AN0_CHANNEL, &sens_res);
        degr_cel = (sens_res * 4.88f) ;
        degr_cel/=10.0;
-       ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 1 , "temp =");
+       ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 1 , "temp");
         ret|=convert_uint16_to_string(degr_cel ,str );
-        ret|=lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 8 , str);
+        ret|=lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 5 , str);
        // lcd_4bit_send_data_string_posit(&lcd_1 , 2 , 1 , "fan");
        ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 2 , 2, "st speed mode");
         if(degr_cel > 80){
             ret|=PWM_set_Duty(100, &ccp_obj);
-           ret|= motor_move_left(&motor_1);
+           ret|= motor_move_right(&motor_1);
             fan_mode ='4';
          
         }else if(degr_cel >= 50 && degr_cel < 80){
           ret|=  PWM_set_Duty(80, &ccp_obj);
-           ret|= motor_move_left(&motor_1);
+           ret|= motor_move_right(&motor_1);
           fan_mode ='3';
          
         }else if(degr_cel >= 30 && degr_cel <50){
            ret|= PWM_set_Duty(80, &ccp_obj);
-            ret|=motor_move_left(&motor_1);
+            ret|=motor_move_right(&motor_1);
           fan_mode ='2';
          
-        }else if(degr_cel >= 20){
+        }else if(degr_cel >= 20 && degr_cel <= 30){
           ret|=  PWM_set_Duty(60, &ccp_obj);
-           ret|= motor_move_left(&motor_1);
+           ret|= motor_move_right(&motor_1);
          fan_mode ='1';
         }
         else{
@@ -125,10 +125,11 @@ int main() {
        fan_mode ='0';
         }
        ret|= lcd_4bit_send_data_char_posit(&lcd_1 , 2 , 1 ,fan_mode );
-        if(fan_mode){
-       ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 11 , "fan on");
+       ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 10 , "fan");
+        if(fan_mode == '0'){
+       ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 13 , "off");
         }else{
-       ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 11 , "fan off");
+       ret|= lcd_4bit_send_data_string_posit(&lcd_1 , 1 , 13 , " on");
         }
         
      
